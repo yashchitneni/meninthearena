@@ -51,12 +51,14 @@ export default function LearnMoreSection() {
             <p className="mb-4 flex-grow">
               Every day, our brothers share stories, coordinate meetups, and support one another via our WhatsApp group.
             </p>
-            <button 
-              onClick={openPopup}
+            <Link 
+              href="https://chat.whatsapp.com/BXuB9TiJUzWEsUkCaYVlfd"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-[#C8A870] text-black px-6 py-2 rounded-full font-bold hover:bg-[#B69660] transition duration-300 mt-auto"
             >
               Join Group
-            </button>
+            </Link>
           </div>
           
           {/* MTA Podcast */}
