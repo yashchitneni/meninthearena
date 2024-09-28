@@ -12,34 +12,33 @@ export interface PopupDialogProps {
 
 export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
   const { isOpen: popupIsOpen, closePopup } = usePopupStore()
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     
     try {
-      // Example API call - replace with your actual API endpoint
       const response = await fetch('/api/submit-form', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email }),
-      })
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
 
       if (response.ok) {
-        // If submission is successful, redirect
-        window.location.href = '/welcome' // Replace with your desired redirect URL
+        console.log('Form submitted successfully');
+        closePopup();
       } else {
-        // Handle errors
-        console.error('Form submission failed')
+        console.error('Form submission failed');
+        // Handle error (e.g., show error message to user)
       }
     } catch (error) {
-      console.error('Error submitting form:', error)
+      console.error('Error submitting form:', error);
+      // Handle error (e.g., show error message to user)
     }
-
-    closePopup()
   }
 
   return (
@@ -53,14 +52,26 @@ export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium block">
-              Name
+            <label htmlFor="firstName" className="text-sm font-medium block">
+              First Name
             </label>
             <Input
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Enter your first name"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="lastName" className="text-sm font-medium block">
+              Last Name
+            </label>
+            <Input
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Enter your last name"
               required
             />
           </div>

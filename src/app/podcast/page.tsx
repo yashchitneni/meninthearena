@@ -2,6 +2,7 @@
 import Navigation from '@/components/Navigation'
 import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
+import { parseISO, format } from 'date-fns';
 
 interface Episode {
   id: string;
@@ -110,7 +111,16 @@ export default function PodcastPage() {
                       />
                       <div>
                         <h3 className="font-bold">{episode.title}</h3>
-                        <p className="text-sm text-gray-400">{new Date(episode.releaseDate).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-400">
+                          {(() => {
+                            try {
+                              return format(parseISO(episode.releaseDate), 'MM/dd/yyyy');
+                            } catch (error) {
+                              console.error('Invalid date:', episode.releaseDate);
+                              return 'Date unavailable';
+                            }
+                          })()}
+                        </p>
                       </div>
                     </div>
                   ))}
