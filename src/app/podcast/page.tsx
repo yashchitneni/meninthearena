@@ -78,7 +78,7 @@ export default function PodcastPage() {
         </section>
         
         <section className="container mx-auto px-4 py-8">
-          <div className=" p-4 rounded-lg shadow-lg"> {/* Removed bg-gray-900 and adjusted padding */}
+          <div className="p-4 rounded-lg shadow-lg"> {/* Removed bg-gray-900 and adjusted padding */}
             <div className="w-full max-w-3xl mx-auto"> {/* Removed bg-[#1A1A1A] and p-4 */}
               {selectedEpisode && (
                 <div className="mb-6"> {/* Reduced margin-bottom */}
@@ -102,24 +102,19 @@ export default function PodcastPage() {
                       className={`episode ${selectedEpisode?.id === episode.id ? 'bg-[#1DB954]' : 'bg-[#191414]'} hover:bg-[#1DB954] px-4 py-3 rounded w-full text-left flex items-center cursor-pointer transition-colors duration-200`}
                       onClick={() => handleEpisodeClick(episode)}
                     >
-                      <Image 
-                        src={episode.imageUrl} 
-                        alt={episode.title} 
-                        width={50} 
-                        height={50} 
-                        className="mr-4 rounded"
-                      />
+                      {episode.imageUrl && (
+                        <Image 
+                          src={episode.imageUrl} 
+                          alt={`Cover image for ${episode.title}`} 
+                          width={50} 
+                          height={50} 
+                          className="mr-4 rounded"
+                        />
+                      )}
                       <div>
                         <h3 className="font-bold">{episode.title}</h3>
                         <p className="text-sm text-gray-400">
-                          {(() => {
-                            try {
-                              return format(parseISO(episode.releaseDate), 'MM/dd/yyyy');
-                            } catch (error) {
-                              console.error('Invalid date:', episode.releaseDate);
-                              return 'Date unavailable';
-                            }
-                          })()}
+                          {episode.releaseDate && format(parseISO(episode.releaseDate), 'MM/dd/yyyy')}
                         </p>
                       </div>
                     </div>

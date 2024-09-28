@@ -1,52 +1,67 @@
 import { NextResponse } from 'next/server';
+import SpotifyWebApi from 'spotify-web-api-node';
 
-const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
-const PODCAST_ID = '5pOSDqLNCZLArkyc3FLIET'; // Your podcast ID
+const spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+});
 
-interface Episode {
+interface SpotifyEpisode {
   id: string;
   name: string;
   description: string;
   release_date: string;
   duration_ms: number;
-  images: { url: string; height: number; width: number }[];
-  external_urls: { spotify: string };
-  // Add any other relevant fields
+  images: { url: string }[];
+  uri: string;
 }
 
-async function getSpotifyAccessToken() {
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')
-    },
-    body: 'grant_type=client_credentials'
-  });
-
-  const data = await response.json();
-  return data.access_token;
+interface SpotifyApiError extends Error {
+  body?: {
+    error: {
+      status: number;
+      message: string;
+    };
+  };
 }
 
 export async function GET() {
   try {
-    const accessToken = await getSpotifyAccessToken();
-    
-    const response = await fetch(`${SPOTIFY_API_URL}/shows/${PODCAST_ID}/episodes?limit=10`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
+    // Get access token
+    const data = await spotifyApi.clientCredentialsGrant();
+    spotifyApi.setAccessToken(data.body['access_token']);
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch episodes from Spotify');
-    }
+    // Get show episodes (replace with your show ID)
+    const showId = '5pOSDqLNCZLArkyc3FLIET'; // Replace with your actual show ID
+    const response = await spotifyApi.getShowEpisodes(showId, { limit: 10 });
 
-    const data = await response.json();
-    const episodes: Episode[] = data.items;
+    const episodes = response.body.items.map((episode: SpotifyEpisode) => ({
+      id: episode.id,
+      title: episode.name,
+      description: episode.description,
+      releaseDate: episode.release_date,
+      durationMs: episode.duration_ms,
+      imageUrl: episode.images[0]?.url,
+      uri: episode.uri
+    }));
+
     return NextResponse.json({ episodes });
-  } catch (error) {
-    console.error('Error fetching latest episodes:', error);
-    return NextResponse.json({ error: 'Failed to fetch latest episodes' }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('Detailed error:', JSON.stringify(error, null, 2));
+    
+    if (error instanceof Error) {
+      const spotifyError = error as SpotifyApiError;
+      const errorMessage = spotifyError.body?.error?.message || spotifyError.message;
+      const statusCode = spotifyError.body?.error?.status || 500;
+
+      console.error('Error message:', errorMessage);
+      return NextResponse.json({ 
+        error: 'Failed to fetch episodes',
+        details: errorMessage
+      }, { status: statusCode });
+    }
+    
+    console.error('Unknown error:', error);
+    return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
   }
 }
