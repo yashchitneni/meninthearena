@@ -1,12 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { PopupDialog } from './PopupDialog'
-
-interface PopupDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { PopupDialog, PopupDialogProps } from './PopupDialog'
+import { useState } from 'react';
 
 export function PopupDialogWrapper({ isOpen, onClose }: PopupDialogProps) {
   return <PopupDialog isOpen={isOpen} onClose={onClose} />

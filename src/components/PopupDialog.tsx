@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { usePopupStore } from '@/store/popupStore'
 
-export const PopupDialog: React.FC = () => {
+export interface PopupDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
   const { isOpen: popupIsOpen, closePopup } = usePopupStore()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
