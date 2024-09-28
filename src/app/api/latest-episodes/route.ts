@@ -3,6 +3,17 @@ import { NextResponse } from 'next/server';
 const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
 const PODCAST_ID = '5pOSDqLNCZLArkyc3FLIET'; // Your podcast ID
 
+interface Episode {
+  id: string;
+  name: string;
+  description: string;
+  release_date: string;
+  duration_ms: number;
+  images: { url: string; height: number; width: number }[];
+  external_urls: { spotify: string };
+  // Add any other relevant fields
+}
+
 async function getSpotifyAccessToken() {
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
@@ -32,16 +43,7 @@ export async function GET() {
     }
 
     const data = await response.json();
-    const episodes = data.items.map((item: any) => ({
-      id: item.id,
-      title: item.name,
-      uri: item.uri,
-      description: item.description,
-      releaseDate: item.release_date,
-      durationMs: item.duration_ms,
-      imageUrl: item.images[0]?.url
-    }));
-
+    const episodes: Episode[] = data.items;
     return NextResponse.json({ episodes });
   } catch (error) {
     console.error('Error fetching latest episodes:', error);

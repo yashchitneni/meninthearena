@@ -101,7 +101,7 @@ export default function PodcastPage() {
                       className={`episode ${selectedEpisode?.id === episode.id ? 'bg-[#1DB954]' : 'bg-[#191414]'} hover:bg-[#1DB954] px-4 py-3 rounded w-full text-left flex items-center cursor-pointer transition-colors duration-200`}
                       onClick={() => handleEpisodeClick(episode)}
                     >
-                      <img 
+                      <Image 
                         src={episode.imageUrl} 
                         alt={episode.title} 
                         width={50} 
