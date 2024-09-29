@@ -64,11 +64,11 @@ export default function Navigation() {
       {isMenuOpen && (
         <nav className="md:hidden mt-4">
           <ul className="flex flex-col items-center space-y-4">
-            <li>
+            {/* <li>
               <Link href="/workouts" className="text-white hover:text-gray-300">
                 Workouts
               </Link>
-            </li>
+            </li> */}
             <li>
               <button
                 onClick={handleCommunityClick}
