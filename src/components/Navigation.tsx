@@ -91,7 +91,7 @@ export default function Navigation() {
                   setIsMenuOpen(false)
                 }}
               >
-                Step Into The Arena
+                Enter The Arena
               </Button>
             </li>
           </ul>

@@ -44,14 +44,15 @@ export default function Home() {
               <h1 className="text-4xl sm:text-6xl md:text-8xl font-extrabold mb-2 sm:mb-4 text-white tracking-wider leading-tight">
                 Men in the Arena
               </h1>
-              <p className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-8 max-w-xl sm:max-w-2xl mx-auto text-white">
-                Embrace the challenge. Rise to greatness. Enter the arena of life.
-              </p>
+              <div className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-8 max-w-xl sm:max-w-2xl mx-auto text-white">
+                <p className="mb-2">Embrace the Challenge.</p>
+                <p className="mb-2">Rise to Greatness.</p>
+              </div>
               <button
                 onClick={openPopup}
                 className="bg-[#C8A870] text-black font-bold py-2 sm:py-3 px-6 sm:px-10 rounded-full text-base sm:text-lg transition-transform hover:scale-110 hover:bg-[#b89a5a] animate-fade-in-up animation-delay-600" 
               >
-                Enter the Arena
+                Enter The Arena
               </button>
             </div>
           </div>
