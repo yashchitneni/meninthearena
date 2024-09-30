@@ -1,3 +1,8 @@
+/**
+ * API route handler for form submission.
+ * @module api/submit-form
+ */
+
 import { NextResponse } from 'next/server';
 import Airtable from 'airtable';
 
@@ -7,6 +12,13 @@ Airtable.configure({
 });
 const base = Airtable.base(process.env.AIRTABLE_BASE_ID!);
 
+/**
+ * Handles POST requests for form submission.
+ * @async
+ * @function POST
+ * @param {Request} request - The incoming request object.
+ * @returns {Promise<NextResponse>} A promise that resolves to a NextResponse object.
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();

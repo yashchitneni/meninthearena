@@ -1,19 +1,19 @@
 'use client'
-import Navigation from '@/components/Navigation'
 import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
 import { parseISO, format } from 'date-fns';
+import { Episode } from '@/types/episode';
 
-interface Episode {
-  id: string;
-  title: string;
-  uri: string;
-  description: string;
-  releaseDate: string;
-  durationMs: number;
-  imageUrl: string;
-}
+/**
+ * Podcast page component for displaying podcast information.
+ * @module app/podcast/page
+ */
 
+/**
+ * Renders the podcast page of the application.
+ * @function PodcastPage
+ * @returns {JSX.Element} The rendered podcast page component.
+ */
 export default function PodcastPage() {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +55,6 @@ export default function PodcastPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      <Navigation />
       
       <main className="flex-grow">
         <section className="relative h-[50vh] w-full overflow-hidden">
@@ -95,28 +94,19 @@ export default function PodcastPage() {
               {isLoading ? (
                 <p className="text-white text-center">Loading episodes...</p>
               ) : (
-                <div className="episodes space-y-2"> {/* Added space-y-2 for consistent spacing */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {episodes.map((episode) => (
-                    <div 
-                      key={episode.id}
-                      className={`episode ${selectedEpisode?.id === episode.id ? 'bg-[#1DB954]' : 'bg-[#191414]'} hover:bg-[#1DB954] px-4 py-3 rounded w-full text-left flex items-center cursor-pointer transition-colors duration-200`}
-                      onClick={() => handleEpisodeClick(episode)}
-                    >
-                      {episode.imageUrl && (
-                        <Image 
-                          src={episode.imageUrl} 
-                          alt={`Cover image for ${episode.title}`} 
-                          width={50} 
-                          height={50} 
-                          className="mr-4 rounded"
+                    <div key={episode.id} className="card bg-black text-white p-4 rounded-lg shadow-lg">
+                      <a href={`/podcast/${episode.id}`} className="block">
+                        <Image
+                          src={episode.imageUrl} // Use episode image URL
+                          alt={episode.title}
+                          width={300} // Set appropriate width
+                          height={200} // Set appropriate height
+                          className="rounded-t-lg" // Rounded top corners
                         />
-                      )}
-                      <div>
-                        <h3 className="font-bold">{episode.title}</h3>
-                        <p className="text-sm text-gray-400">
-                          {episode.releaseDate && format(parseISO(episode.releaseDate), 'MM/dd/yyyy')}
-                        </p>
-                      </div>
+                        <h2 className="text-xl font-bold mt-2">{episode.title}</h2> {/* Title only */}
+                      </a>
                     </div>
                   ))}
                 </div>

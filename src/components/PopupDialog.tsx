@@ -1,17 +1,11 @@
 'use client'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { PopupDialogProps } from '@/types/popupDialog'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { usePopupStore } from '@/store/popupStore'
-
-export interface PopupDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
-  const { isOpen: popupIsOpen, closePopup } = usePopupStore()
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -30,7 +24,10 @@ export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
 
       if (response.ok) {
         console.log('Form submitted successfully');
-        closePopup();
+        onClose();
+
+        // After successful submission
+        window.open('https://chat.whatsapp.com/BXuB9TiJUzWEsUkCaYVlfd', '_blank');
       } else {
         console.error('Form submission failed');
         // Handle error (e.g., show error message to user)
@@ -42,9 +39,9 @@ export function PopupDialog({ isOpen, onClose }: PopupDialogProps) {
   }
 
   return (
-    <Dialog open={popupIsOpen} onOpenChange={closePopup}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className="text-center">
+        <DialogHeader>
           <DialogTitle className="text-3xl font-bold mb-2">Men In The Arena</DialogTitle>
           <DialogDescription className="text-lg">
             Join our community of men committed to growth and transformation.

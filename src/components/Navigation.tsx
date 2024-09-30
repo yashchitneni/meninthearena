@@ -1,21 +1,31 @@
 'use client'
-import Image from 'next/image'
-import Link from 'next/link'
+import React, { useState } from 'react';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button"
-import { useState } from 'react'
-import { usePopupStore } from '@/store/popupStore'
+import { usePopupStore } from '@/store/popupStore';
+import Image from 'next/image';
 
+/**
+ * Navigation component for the application.
+ * @module components/Navigation
+ */
+
+/**
+ * Renders the navigation bar for the application.
+ * @function Navigation
+ * @returns {JSX.Element} The rendered Navigation component.
+ */
 export default function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { openPopup } = usePopupStore()
+  const [isOpen, setIsOpen] = useState(false);
+  const { openPopup } = usePopupStore();
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   const handleCommunityClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    openPopup()
-    setIsMenuOpen(false)
-  }
+    e.preventDefault();
+    openPopup();
+    setIsOpen(false);
+  };
 
   return (
     <header className="bg-black p-4">
@@ -37,7 +47,7 @@ export default function Navigation() {
               </Link>
             </li>
             <li>
-              <button onClick={openPopup} className="text-white hover:text-gray-300">
+              <button onClick={handleCommunityClick} className="text-white hover:text-gray-300">
                 Community
               </button>
             </li>
@@ -61,7 +71,7 @@ export default function Navigation() {
           Menu
         </button>
       </div>
-      {isMenuOpen && (
+      {isOpen && (
         <nav className="md:hidden mt-4">
           <ul className="flex flex-col items-center space-y-4">
             {/* <li>
@@ -87,8 +97,8 @@ export default function Navigation() {
                 variant="outline"
                 className="bg-[#C8A870] text-black hover:bg-[#B69660] hover:text-white transition duration-300"
                 onClick={() => {
-                  openPopup()
-                  setIsMenuOpen(false)
+                  openPopup();
+                  setIsOpen(false);
                 }}
               >
                 Enter The Arena
@@ -98,6 +108,6 @@ export default function Navigation() {
         </nav>
       )}
     </header>
-  )
+  );
 }
 

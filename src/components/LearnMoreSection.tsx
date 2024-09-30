@@ -1,8 +1,20 @@
+/**
+ * LearnMoreSection component for displaying additional information.
+ * @module components/LearnMoreSection
+ */
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { PopupDialogWrapper } from './PopupDialogWrapper'
+import PopupDialogWrapper from './PopupDialogWrapper'
+import { Button } from "./ui/button";
+import { Episode } from '@/types/episode'
 
+/**
+ * Renders a section with additional information and a call-to-action button.
+ * @function LearnMoreSection
+ * @returns {JSX.Element} The rendered LearnMoreSection component.
+ */
 export default function LearnMoreSection() {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
 
@@ -18,9 +30,10 @@ export default function LearnMoreSection() {
             <div className="mb-4 relative w-full aspect-video">
               <Image
                 src="/images/homepage/learn-more/bi-weekly workouts.jpg"
-                alt="Bi-Weekly Workouts"
-                layout="fill"
-                objectFit="cover"
+                alt="Bi-weekly workouts"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
                 className="rounded-lg"
               />
             </div>
@@ -41,9 +54,10 @@ export default function LearnMoreSection() {
             <div className="mb-4 relative w-full aspect-video">
               <Image
                 src="/images/homepage/learn-more/whatsapp.png"
-                alt="Private WhatsApp Group"
-                layout="fill"
-                objectFit="cover"
+                alt="WhatsApp"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
                 className="rounded-lg"
               />
             </div>
@@ -66,9 +80,10 @@ export default function LearnMoreSection() {
             <div className="mb-4 relative w-full aspect-video">
               <Image
                 src="/images/homepage/learn-more/podcast.jpg"
-                alt="MTA Podcast"
-                layout="fill"
-                objectFit="cover"
+                alt="Podcast"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
                 className="rounded-lg"
               />
             </div>

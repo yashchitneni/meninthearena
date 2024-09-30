@@ -1,27 +1,33 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { PopupDialogProvider } from '@/components/PopupDialogWrapper'
+/**
+ * Root layout component for the application.
+ * @module app/layout
+ */
 
-const inter = Inter({ subsets: ['latin'] })
+import React from 'react';
+import './globals.css';
+import { Inter } from 'next/font/google';
+import Navigation from '@/components/Navigation';
+import ClientPopupDialogWrapper from '@/components/ClientPopupDialogWrapper';
 
-export const metadata: Metadata = {
-  title: 'Men In The Arena',
-  description: 'Every man is who we are',
-}
+const inter = Inter({ subsets: ['latin'] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+/**
+ * Root layout component that wraps all pages.
+ * @function RootLayout
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components to be rendered within the layout.
+ * @returns {JSX.Element} The rendered root layout component.
+ */
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <PopupDialogProvider>
+      <body className={`bg-black text-white ${inter.className}`}>
+        <Navigation />
+        <main className="w-full">
           {children}
-        </PopupDialogProvider>
+        </main>
+        <ClientPopupDialogWrapper />
       </body>
     </html>
-  )
+  );
 }
