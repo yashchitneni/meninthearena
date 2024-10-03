@@ -8,7 +8,8 @@ import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import LearnMoreSection from '@/components/LearnMoreSection';
 import { usePopupStore } from '@/store/popupStore'
-import { useState } from 'react'; // Add this import
+import { useState } from 'react';
+import NextWorkoutSection from '@/components/NextWorkoutSection';
 
 /**
  * Renders the home page of the application.
@@ -68,6 +69,7 @@ export default function Home() {
               </div>
             </main>
 
+            <NextWorkoutSection />
             <LearnMoreSection />
           </div>
     </>
