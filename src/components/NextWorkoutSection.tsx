@@ -41,7 +41,18 @@ export default function NextWorkoutSection() {
             {nextWorkout ? ( // Check if nextWorkout is not null
               <>
                 <h3 className="text-2xl font-bold mb-4 text-white">{nextWorkout.name}</h3>
-                <p className="text-gray-300 mb-6">Leader: {nextWorkout.leaderName || "No leader available."}</p>
+                <p className="text-gray-300 mb-6">
+                    Leader: {nextWorkout.leader ? (
+                        <a 
+                            href={`https://instagram.com/${nextWorkout.leader.igHandle}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-blue-500 underline"
+                        >
+                            {nextWorkout.leader.name}
+                        </a>
+                    ) : "No leader available."}
+                </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-gray-300">
                   <div className="flex items-center">
                     <CalendarIcon className="h-5 w-5 mr-2 text-[#C8A870]" />
@@ -71,7 +82,7 @@ BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
 SUMMARY:${nextWorkout.name}
-DESCRIPTION:Join the workout led by ${nextWorkout.leaderName || "No leader available."}
+DESCRIPTION:Join the workout led by ${nextWorkout.leader?.name || "No leader available."}
 LOCATION:${nextWorkout.location}
 DTSTART:${new Date(nextWorkout.date + ' ' + nextWorkout.time).toISOString().replace(/-|:|\.\d+/g, '')}
 DTEND:${new Date(new Date(nextWorkout.date + ' ' + nextWorkout.time).getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '')}
