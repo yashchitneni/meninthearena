@@ -97,7 +97,7 @@ export default function NextWorkoutSection() {
               className="w-full bg-[#C8A870] text-black font-bold py-3 px-6 rounded-full hover:bg-[#B69660] transition duration-300"
               onClick={handleAddToCalendar}
             >
-              Add to Calendar
+              Join Workout
             </button>
             {showOptions && (
               <div className="mt-4">
