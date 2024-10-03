@@ -61,6 +61,36 @@ export default function NextWorkoutSection() {
               <p className="text-gray-300">Loading next workout...</p>
             )}
           </div>
+          <div className="px-6 pb-6 sm:px-8 sm:pb-8">
+            <button 
+              className="w-full bg-[#C8A870] text-black font-bold py-3 px-6 rounded-full hover:bg-[#B69660] transition duration-300"
+              onClick={() => {
+                if (nextWorkout) {
+                  const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${nextWorkout.name}
+DESCRIPTION:Join the workout led by ${nextWorkout.leaderName || "No leader available."}
+LOCATION:${nextWorkout.location}
+DTSTART:${new Date(nextWorkout.date + ' ' + nextWorkout.time).toISOString().replace(/-|:|\.\d+/g, '')}
+DTEND:${new Date(new Date(nextWorkout.date + ' ' + nextWorkout.time).getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '')}
+END:VEVENT
+END:VCALENDAR
+                  `;
+                  const blob = new Blob([icsContent], { type: 'text/calendar' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'workout-invite.ics';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }
+              }}
+            >
+              Join This Workout
+            </button>
+          </div>
         </div>
       </div>
     </section>
