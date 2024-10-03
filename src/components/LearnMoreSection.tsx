@@ -61,7 +61,7 @@ export default function LearnMoreSection() {
             {/* Image and Description */}
             <div className="mb-4 relative w-full aspect-video">
               <Image
-                src="/images/homepage/learn-more/bi-weekly_workouts.jpg" // Update with the correct image path
+                src="/images/homepage/learn-more/bi-weekly_workouts.JPG" // Update with the correct image path
                 alt="Bi-Weekly Workouts"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
