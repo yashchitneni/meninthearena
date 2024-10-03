@@ -6,6 +6,7 @@ export default function NextWorkoutSection() {
   const [nextWorkout, setNextWorkout] = useState<Workout | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // Updated type to allow string
+  const [showOptions, setShowOptions] = useState(false);
 
   useEffect(() => {
     async function fetchNextWorkout() {
@@ -30,6 +31,25 @@ export default function NextWorkoutSection() {
 
     fetchNextWorkout();
   }, []);
+
+  const handleAddToCalendar = () => {
+    setShowOptions(!showOptions);
+  };
+
+  const eventDetails = {
+    summary: nextWorkout?.name,
+    description: `Join the workout led by ${nextWorkout?.leader?.name || "No leader available."}`,
+    location: nextWorkout?.location,
+    start: new Date(`${nextWorkout?.date} ${nextWorkout?.time}`),
+    end: new Date(new Date(`${nextWorkout?.date} ${nextWorkout?.time}`).getTime() + 60 * 60 * 1000),
+  };
+
+  const startDate = eventDetails.start instanceof Date && !isNaN(eventDetails.start.getTime()) ? eventDetails.start : new Date();
+  const endDate = eventDetails.end instanceof Date && !isNaN(eventDetails.end.getTime()) ? eventDetails.end : new Date();
+
+  const googleCalendarLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.summary ?? 'No Title')}&details=${encodeURIComponent(eventDetails.description ?? 'No Description')}&location=${encodeURIComponent(eventDetails.location ?? 'No Location')}&dates=${startDate.toISOString().replace(/-|:|\.\d+/g, '')}/${endDate.toISOString().replace(/-|:|\.\d+/g, '')}`;
+
+  const outlookCalendarLink = `https://outlook.live.com/owa/?path=/calendar/action/compose&subject=${encodeURIComponent(eventDetails.summary ?? 'No Title')}&body=${encodeURIComponent(eventDetails.description ?? 'No Description')}&location=${encodeURIComponent(eventDetails.location ?? 'No Location')}&startdt=${startDate.toISOString()}&enddt=${endDate.toISOString()}`;
 
   // Add a new section to display the workout leader
   return (
@@ -75,32 +95,20 @@ export default function NextWorkoutSection() {
           <div className="px-6 pb-6 sm:px-8 sm:pb-8">
             <button 
               className="w-full bg-[#C8A870] text-black font-bold py-3 px-6 rounded-full hover:bg-[#B69660] transition duration-300"
-              onClick={() => {
-                if (nextWorkout) {
-                  const icsContent = `
-BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-SUMMARY:${nextWorkout.name}
-DESCRIPTION:Join the workout led by ${nextWorkout.leader?.name || "No leader available."}
-LOCATION:${nextWorkout.location}
-DTSTART:${new Date(nextWorkout.date + ' ' + nextWorkout.time).toISOString().replace(/-|:|\.\d+/g, '')}
-DTEND:${new Date(new Date(nextWorkout.date + ' ' + nextWorkout.time).getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '')}
-END:VEVENT
-END:VCALENDAR
-                  `;
-                  const blob = new Blob([icsContent], { type: 'text/calendar' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'workout-invite.ics';
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }
-              }}
+              onClick={handleAddToCalendar}
             >
-              Join This Workout
+              Add to Calendar
             </button>
+            {showOptions && (
+              <div className="mt-4">
+                <a href={googleCalendarLink} target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-500 text-white py-2 rounded mb-2">
+                  Add to Google Calendar
+                </a>
+                <a href={outlookCalendarLink} target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-500 text-white py-2 rounded">
+                  Add to Outlook Calendar
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>
