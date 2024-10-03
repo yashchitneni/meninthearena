@@ -6,7 +6,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import PopupDialogWrapper from './PopupDialogWrapper'
 import { Button } from "./ui/button";
 import { Episode } from '@/types/episode'
 
@@ -100,7 +99,6 @@ export default function LearnMoreSection() {
           </div>
         </div>
       </div>
-      <PopupDialogWrapper isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
     </section>
   )
 }

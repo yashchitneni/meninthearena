@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import SpotifyDescription from '@/components/SpotifyDescription';
 
 interface Episode {
 	imageUrl: string;
@@ -53,10 +54,7 @@ export default function PodcastPage({ params }: { params: { id: string } }) {
 				></iframe>
 			</div>
 
-			{/* Wrap description in a container and preserve formatting */}
-			<div className="max-w-3xl mx-auto px-4">
-				<p className="whitespace-pre-wrap">{episode.description}</p>
-			</div>
+			<SpotifyDescription description={episode.description} />
 		</div>
 	);
 }
