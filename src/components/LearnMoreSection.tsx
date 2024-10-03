@@ -29,7 +29,7 @@ export default function LearnMoreSection() {
           <div className="flex flex-col items-center text-center h-full">
             <div className="mb-4 relative w-full aspect-video">
               <Image
-                src="/images/homepage/learn-more/bi-weekly workouts.jpg"
+                src="/images/homepage/learn-more/bi-weekly_workouts.jpg"
                 alt="Bi-weekly workouts"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
