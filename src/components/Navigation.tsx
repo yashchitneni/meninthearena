@@ -42,11 +42,6 @@ export default function Navigation() {
         <nav className="hidden md:block">
           <ul className="flex items-center space-x-8">
             <li>
-              <Link href="/workouts" className="text-white hover:text-gray-300">
-                Workouts
-              </Link>
-            </li>
-            <li>
               <button onClick={handleCommunityClick} className="text-white hover:text-gray-300">
                 Community
               </button>
