@@ -24,23 +24,28 @@ export async function GET() {
       const formattedDate = workoutDate.toLocaleDateString(); // Adjust format as needed
       const formattedTime = workoutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Adjust format as needed
 
-      // Fetch leader details if 'Leader Name' is a single record
-      let leaderName: string | null = null; // Initialize as null
+      let leader: { name: string | null; igHandle: string | null } | null = null; // Initialize leader as null
       if (nextWorkout['Leader Name']) {
         const leaderId = String(nextWorkout['Leader Name']); // Convert to string
         const leaderRecord = await base('Men In Arena - Contact Info').find(leaderId);
         console.log('Leader Record:', leaderRecord);
-        leaderName = `${leaderRecord.fields['First Name']} ${leaderRecord.fields['Last Name']}`;
+        leader = {
+          name: `${leaderRecord.fields['First Name']} ${leaderRecord.fields['Last Name']}`,
+          igHandle: typeof leaderRecord.fields['IG Handle'] === 'string' ? leaderRecord.fields['IG Handle'] : null,
+        };
       }
 
-      // Return the response with the leader's name
+      // After fetching the workout data
+      console.log(nextWorkout); // Check the structure of nextWorkout
+
+      // Return the response with the leader's name and IG Handle
       return NextResponse.json({
         name: nextWorkout.Name,
         date: formattedDate,
         time: formattedTime,
         location: nextWorkout.Location,
         description: nextWorkout.Description || "No description available.",
-        leaderName // Use the single leaderName
+        leader, // Include the leader object
       });
     } else {
       console.log('No upcoming workouts found.');
