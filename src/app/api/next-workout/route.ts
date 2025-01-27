@@ -10,6 +10,9 @@ const base = Airtable.base(process.env.AIRTABLE_BASE_ID!);
 
 export async function GET() {
   try {
+    // Log the current time when API is called
+    console.log('API Current DateTime:', new Date().toLocaleString());
+
     const records = await base('Men in the Arena Workouts').select({
       maxRecords: 1,
       sort: [{field: "Date", direction: "asc"}],
@@ -20,9 +23,22 @@ export async function GET() {
       const nextWorkout = records[0].fields;
 
       // Format the date and time
-      const workoutDate = nextWorkout.Date && typeof nextWorkout.Date === 'string' ? new Date(nextWorkout.Date) : new Date(); // Ensure Date is a string
-      const formattedDate = workoutDate.toLocaleDateString(); // Adjust format as needed
-      const formattedTime = workoutDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Adjust format as needed
+      const workoutDate = nextWorkout.Date && typeof nextWorkout.Date === 'string' 
+        ? new Date(nextWorkout.Date) 
+        : new Date();
+      
+      console.log('Raw Workout Date from Airtable:', nextWorkout.Date);
+      console.log('Parsed Workout Date:', workoutDate);
+
+      const formattedDate = workoutDate.toLocaleDateString();
+      const formattedTime = workoutDate.toLocaleTimeString([], { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+
+      // Log the formatted values
+      console.log('Formatted Date:', formattedDate);
+      console.log('Formatted Time:', formattedTime);
 
       let leader: { name: string | null; igHandle: string | null } | null = null; // Initialize leader as null
       if (nextWorkout['Leader Name']) {

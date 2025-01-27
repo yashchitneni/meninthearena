@@ -22,6 +22,13 @@ const base = Airtable.base(process.env.AIRTABLE_BASE_ID!);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log('Received form data:', body); // Debug log
+    
+    // Validate environment variables
+    console.log('Checking environment variables:');
+    console.log('AIRTABLE_API_TOKEN exists:', !!process.env.AIRTABLE_API_TOKEN);
+    console.log('AIRTABLE_BASE_ID exists:', !!process.env.AIRTABLE_BASE_ID);
+    console.log('AIRTABLE_TABLE_ID exists:', !!process.env.AIRTABLE_TABLE_ID);
     
     // Create a record in Airtable
     const record = await base(process.env.AIRTABLE_TABLE_ID!).create([
@@ -34,11 +41,14 @@ export async function POST(request: Request) {
       },
     ]);
 
-    console.log('Created record:', record);
+    console.log('Created Airtable record:', record);
 
-    return NextResponse.json({ message: 'Form submitted successfully' }, { status: 200 });
+    return NextResponse.json({ message: 'Form submitted successfully', record }, { status: 200 });
   } catch (error) {
-    console.error('Error submitting form:', error);
-    return NextResponse.json({ message: 'Error submitting form' }, { status: 500 });
+    console.error('Detailed error:', error);
+    return NextResponse.json({ 
+      message: 'Error submitting form', 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    }, { status: 500 });
   }
 }

@@ -11,13 +11,18 @@ export default function NextWorkoutSection() {
   useEffect(() => {
     async function fetchNextWorkout() {
       try {
+        console.log('Current DateTime:', new Date().toLocaleString());
+        console.log('Current Date:', new Date().toDateString());
+        
         const response = await fetch('/api/next-workout');
         if (!response.ok) {
           throw new Error('Failed to fetch next workout');
         }
         const data = await response.json();
         setNextWorkout(data);
-        console.log('Next Workout Data:', data); // Log the fetched data
+        console.log('Next Workout Data:', data);
+        console.log('Next Workout Date:', data.date);
+        console.log('Next Workout Time:', data.time);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
